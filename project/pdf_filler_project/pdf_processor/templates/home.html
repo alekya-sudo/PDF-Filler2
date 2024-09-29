@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill PDF Form</title>
+    <script>
+        function addField() {
+            const fieldContainer = document.getElementById("fields-container");
+            const div = document.createElement("div");
+            div.innerHTML = `
+                <input type="text" name="field_name[]" placeholder="Field Name" required />
+                <input type="text" name="field_value[]" placeholder="Field Value" required />
+            `;
+            fieldContainer.appendChild(div);
+        }
+    </script>
+</head>
+<body>
+    <h1>Fill PDF Form</h1>
+    <form method="post" enctype="multipart/form-data" action="{% url 'fill_pdf' %}">
+        {% csrf_token %}
+        <label for="pdf_file">Upload PDF File:</label>
+        <input type="file" name="pdf_file" required /><br><br>
+
+        <label for="knowledge_db_file">Upload Knowledge DB (CSV):</label>
+        <input type="file" name="knowledge_db_file" required /><br><br>
+
+        <h3>Define Fields to Fill</h3>
+        <div id="fields-container">
+            <input type="text" name="field_name[]" placeholder="Field Name" required />
+            <input type="text" name="field_value[]" placeholder="Field Value" required />
+        </div>
+        <br>
+        <button type="button" onclick="addField()">Add Another Field</button><br><br>
+        <button type="submit">Fill PDF</button>
+    </form>
+</body>
+</html>
